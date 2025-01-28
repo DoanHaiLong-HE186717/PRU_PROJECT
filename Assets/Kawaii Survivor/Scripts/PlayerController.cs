@@ -1,19 +1,24 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Elements")]     
+    [SerializeField]
+    private MobileJoystick playerJoystick;
+
+    [Header("Settings")]
     [SerializeField]
     private Rigidbody2D rig;
+    [SerializeField]
+    private float moveSpeed;
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         
     }
-
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        rig.linearVelocity = playerJoystick.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 }
