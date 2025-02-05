@@ -28,7 +28,11 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private int damage;
     [SerializeField]
+    private float attackDelay;
+    [SerializeField]
     private Animator animator;
+
+    private float attackTimer;
     private List<Enemy> damagedEnemies = new List<Enemy>();
 
 
@@ -66,9 +70,25 @@ public class Weapon : MonoBehaviour
         if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
+            ManageAttack();
+
         }
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
+        IncrementAttackTimer();
+    }
 
+    private void ManageAttack() 
+    {
+        if (attackTimer >= attackDelay) 
+        {
+            attackTimer = 0;
+            StartAttack();
+        }
+    }
+
+    private void IncrementAttackTimer() 
+    {
+        attackTimer += Time.deltaTime;
     }
 
     [NaughtyAttributes.Button]
@@ -85,13 +105,26 @@ public class Weapon : MonoBehaviour
     private void StopAttack()
     {
         state = State.Idle;
+        // Clear the attacked enemies
+        //Damaged enemies list
+        damagedEnemies.Clear();
     }
     private void Attack()
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(hitDetectionTransform.position, hitDetectionRadius, enemyMask);
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].GetComponent<Enemy>().TakeDamage(damage);
+            Enemy enemy = enemies[i].GetComponent<Enemy>();
+            //1. Is the enemy inside of the list ?
+            if (!damagedEnemies.Contains(enemy)) 
+            {
+                enemy.TakeDamage(damage);
+                damagedEnemies.Add(enemy);
+            }
+
+            //2. If no let's attack him, and add it to the list
+
+            //3. If Yes, let's continue, check the next enemy
         }
     }
     private Enemy GetClosestEnemy()
