@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 [RequireComponent(typeof(EnemyMovement))]
 public class Enemy : MonoBehaviour
@@ -24,6 +25,8 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private SpriteRenderer spawnIndicator;
+    [SerializeField]
+    private Collider2D collider;
 
 
     [Header("Attack")]
@@ -36,6 +39,9 @@ public class Enemy : MonoBehaviour
     private float attackDelay;
     private float attackTimer;
     bool hasSpawned;
+
+    [Header("Actions")]
+    public static Action<int, Vector2> onDamageTaken;
 
     [Header("Effects")]
     [SerializeField]
@@ -76,11 +82,11 @@ public class Enemy : MonoBehaviour
             .setLoopPingPong(4)
             .setOnComplete(SpawnSequenceCompleted);
     }
-    private void SpawnSequenceCompleted()
+    private void SpawnSequenceCompleted()   
     {
         SetRenderersVisibility(true);
         hasSpawned = true;
-
+        collider.enabled = true;
         movement.StorePlayer(player);
     }
 
@@ -130,6 +136,7 @@ public class Enemy : MonoBehaviour
 
         healthText.text = health.ToString();
 
+        onDamageTaken?.Invoke(damage, transform.position);
 
         if (health <= 0) PassAway();
 

@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private Transform hitDetectionTransform;
     [SerializeField]
+    private BoxCollider2D hitCollider;
+    [SerializeField]
     private float hitDetectionRadius;
 
     [Header("Settings")]
@@ -70,6 +72,7 @@ public class Weapon : MonoBehaviour
         if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
+            transform.up = targetUpVector;
             ManageAttack();
 
         }
@@ -96,6 +99,8 @@ public class Weapon : MonoBehaviour
     {
         animator.Play("Attack");
         state = State.Attack;
+        damagedEnemies.Clear();
+        animator.speed = 1f / attackDelay;
     }
     private void Attacking()
     {
@@ -111,7 +116,14 @@ public class Weapon : MonoBehaviour
     }
     private void Attack()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(hitDetectionTransform.position, hitDetectionRadius, enemyMask);
+        //Collider2D[] enemies = Physics2D.OverlapCircleAll(hitDetectionTransform.position, hitDetectionRadius, enemyMask);
+        Collider2D[] enemies = Physics2D.OverlapBoxAll
+            (
+            hitDetectionTransform.position, 
+            hitCollider.bounds.size,
+            hitDetectionTransform.localEulerAngles.z,
+            enemyMask
+            );
         for (int i = 0; i < enemies.Length; i++)
         {
             Enemy enemy = enemies[i].GetComponent<Enemy>();

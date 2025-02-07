@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     [Header("Settings")]
     [SerializeField]
     private Vector2 minMaxXY;
-
+    private SpriteRenderer spriteRenderer;
     private void LateUpdate()
     {
         if (target == null) 
