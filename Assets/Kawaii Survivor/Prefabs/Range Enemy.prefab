@@ -5185,7 +5185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: {fileID: 0}
-  moveSpeed: 0.75
+  moveSpeed: 1.75
 --- !u!114 &-6798968905418673922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5199,10 +5199,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  renderer: {fileID: 0}
+  renderer: {fileID: 8639983782814030567}
   spawnIndicator: {fileID: 6860844994134759271}
-  collider: {fileID: 0}
-  passAwayParticles: {fileID: 0}
+  collider: {fileID: 1957352150759905008}
+  passAwayParticles: {fileID: 3624700284096866002}
   playerDetectionRadius: 5
   gizmos: 1
 --- !u!114 &-1096884774817283745
