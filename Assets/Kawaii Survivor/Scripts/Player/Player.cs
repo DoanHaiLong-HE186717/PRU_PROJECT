@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
 {
     [Header("Components")]
     private PlayerHealth playerHealth;
+    [SerializeField]
+    private CircleCollider2D collider;
 
     private void Awake()
     {
@@ -26,5 +28,10 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage) 
     {
         playerHealth.TakeDamage(damage);
+    }
+
+    public Vector2 GetCenter() 
+    {
+        return (Vector2)transform.position + collider.offset;
     }
 }

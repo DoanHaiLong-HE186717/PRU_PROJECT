@@ -15,6 +15,7 @@ public class DamageTextManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+
         Enemy.onDamageTaken -= EnemyHitCallback;
     }
     void Start()

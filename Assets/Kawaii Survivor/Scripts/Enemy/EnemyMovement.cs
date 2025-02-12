@@ -19,17 +19,18 @@ public class EnemyMovement : MonoBehaviour
     }
     void Update()
     {
-        if (players != null)
-        {
-            FollowPlayer();
-        }
+        //if (players != null)
+        //{
+        //    FollowPlayer();
+        //}
 
     }
 
     public void StorePlayer(Player player) => this.players = player;
+        
 
 
-    private void FollowPlayer()
+    public void FollowPlayer()
     {
         Vector2 targetPosition = Vector2.MoveTowards(transform.position, players.transform.position, moveSpeed * Time.deltaTime);
 
