@@ -7,12 +7,11 @@ public class DamageText : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private TextMeshPro damageText;
 
-    [NaughtyAttributes.Button]
-    public void Animate(int damage)//string damage, bool isCriticalHit
+    public void Animate(int damage, bool isCriticalHit)//string damage, bool isCriticalHit
     {
         damageText.text = damage.ToString();
-        animator.Play("Animate");
+        damageText.color = isCriticalHit ? Color.yellow : Color.white;
 
-        //damageText.color = isCriticalHit ? Color.yellow : Color.white;
+        animator.Play("Animate");
     }
 }
