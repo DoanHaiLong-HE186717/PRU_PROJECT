@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -42,8 +41,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private void PassAway() 
     {
-        Debug.Log("Dead");
-        SceneManager.LoadScene(0);
+        GameManager.instance.SetGameState(GameState.GAMEOVER);
     }
 
     private void UpdateHealthUI() 

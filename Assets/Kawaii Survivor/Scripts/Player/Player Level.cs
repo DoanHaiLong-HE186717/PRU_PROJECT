@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Diagnostics;
 public class PlayerLevel : MonoBehaviour
 {
     [Header(" Settings ")]
@@ -50,9 +51,22 @@ public class PlayerLevel : MonoBehaviour
     private void LevelUp()
     {
         level++;
-        //levelsEarnedThisWave++;
+        levelsEarnedThisWave++;
         currentXp = 0;
         UpdateRequiredXp();
+    }
+    public bool HasLeveledUp()
+    {
+        //if (DEBUG)
+        //    return true;
+
+        if (levelsEarnedThisWave > 0)
+        {
+            levelsEarnedThisWave--;
+            return true;
+        }
+
+        return false;
     }
 
     // Update is called once per frame

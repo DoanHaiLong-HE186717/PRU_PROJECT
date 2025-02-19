@@ -5,7 +5,7 @@ using NaughtyAttributes;
 
 
 [RequireComponent(typeof(WaveManagerUI))]
-public class WaveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour, IGameStateListener
 {
     [Header(" Elements ")]
     [SerializeField] private Player player;
@@ -30,7 +30,7 @@ public class WaveManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartWave(currentWaveIndex);
+       
     }
 
     // Update is called once per frame
@@ -103,14 +103,19 @@ public class WaveManager : MonoBehaviour
         {
             ui.UpdateTimerText("");
             ui.UpdateWaveText("Stage Completed");
-
-            //GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
+            GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
         }
-        else
-            //GameManager.instance.WaveCompletedCallback();
+        else 
+        {
+            GameManager.instance.WaveCompletedCallback();
             StartWave(currentWaveIndex);
+        }
 
 
+    }
+    private void StartNextWave()
+    {
+        StartWave(currentWaveIndex);
     }
     private void DefeatAllEnemies()
     {
@@ -127,6 +132,21 @@ public class WaveManager : MonoBehaviour
         targetPosition.y = Mathf.Clamp(targetPosition.y, -8, 8);
 
         return targetPosition;
+    }
+
+    public void GameStateChangedCallback(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.GAME:
+                StartNextWave();
+                break;
+
+            case GameState.GAMEOVER:
+                isTimerOn = false;
+                DefeatAllEnemies();
+                break;
+        }
     }
 }
 
