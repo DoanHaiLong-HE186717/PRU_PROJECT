@@ -34,6 +34,8 @@ public abstract class Enemy : MonoBehaviour
     [Header(" DEBUG ")]
     [SerializeField] protected bool gizmos;
 
+    private bool hasDied = false;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -83,7 +85,7 @@ public abstract class Enemy : MonoBehaviour
         spawnIndicator.enabled = !visibility;
     }
 
-    public void TakeDamage(int damage , bool isCriticalHit)//, bool isCriticalHit
+    public void TakeDamage(int damage , bool isCriticalHit)
     {
         int realDamage = Mathf.Min(damage, health);
         health -= realDamage;
@@ -96,8 +98,12 @@ public abstract class Enemy : MonoBehaviour
 
     public void PassAway()
     {
+        if (hasDied) return;  
+        hasDied = true;
+
         onPassedAway?.Invoke(transform.position);
         PassAwayAfterWave();
+
     }
 
     public void PassAwayAfterWave()
