@@ -108,7 +108,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         else 
         {
             GameManager.instance.WaveCompletedCallback();
-            StartWave(currentWaveIndex);
+           
         }
 
 
