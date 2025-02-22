@@ -2465,6 +2465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6aaf73f69d0104baca0f8832ecf602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatsManager: {fileID: 1331704365}
   upgradeContainers:
   - {fileID: 2104902883}
   - {fileID: 1072309987}
@@ -2726,7 +2727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerJoystick: {fileID: 1898948140}
   rig: {fileID: 497224318}
-  moveSpeed: 3
+  baseMoveSpeed: 3
 --- !u!50 &497224318
 Rigidbody2D:
   serializedVersion: 5
@@ -2821,7 +2822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ea2bd6cc49c4a4f8cbe824d9f12fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  baseMaxHealth: 5
   healthSlider: {fileID: 592857808}
   healthText: {fileID: 972825580}
 --- !u!114 &497224324
@@ -5529,7 +5530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1081350587
 Transform:
   m_ObjectHideFlags: 0
@@ -12161,7 +12162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1327478262
 Transform:
   m_ObjectHideFlags: 0
@@ -12222,6 +12223,51 @@ MonoBehaviour:
   aimLerp: 12
   hitDetectionTransform: {fileID: 1926164319}
   hitCollider: {fileID: 1926164320}
+--- !u!1 &1331704363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331704364}
+  - component: {fileID: 1331704365}
+  m_Layer: 0
+  m_Name: Player Stats Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1331704364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331704363}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1731515872}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331704365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331704363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b130e5f5ed0cc1e43b6625cabba4e08e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 1ab3c0d48c9d3bb48947429b6f5f6a81, type: 2}
 --- !u!1 &1342470787
 GameObject:
   m_ObjectHideFlags: 0
@@ -13954,6 +14000,7 @@ Transform:
   - {fileID: 1645988850}
   - {fileID: 445323670}
   - {fileID: 461042733}
+  - {fileID: 1331704364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739341073
@@ -14002,7 +14049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 497224324}
-  waveDuration: 2
+  waveDuration: 20
   waves:
   - name: Wave00
     segments:

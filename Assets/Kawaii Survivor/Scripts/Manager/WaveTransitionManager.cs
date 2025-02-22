@@ -12,6 +12,7 @@ using Unity.VisualScripting;
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
     [Header(" Elements ")]
+    [SerializeField] private PlayerStatsManager playerStatsManager;
     [SerializeField] private UpgradeContainer[] upgradeContainers;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -106,7 +107,7 @@ public void GameStateChangedCallback(GameState gameState)
 
             case Stat.Range:
                 value = Random.Range(1f, 5f);
-                buttonString = "+" + value.ToString();
+                buttonString = "+" + value.ToString("F2");
                 break;
 
             case Stat.HealthRecoverySpeed:
@@ -144,6 +145,6 @@ public void GameStateChangedCallback(GameState gameState)
                 return () => Debug.Log("Invalid stat");
         }
 
-        return () => Debug.Log("Processed");
+        return () => playerStatsManager.AddPlayerStat(stat, value);
     }
 }
