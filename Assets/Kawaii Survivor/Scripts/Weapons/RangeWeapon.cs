@@ -98,17 +98,15 @@ public class RangeWeapon : Weapon
 
         //PlayAttackSound();
     }
+    public override void UpdateStats(PlayerStatsManager playerStatsManager)
+    {
+        ConfigureStats();
+        damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
+        attackDelay /= 1 + (playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-    //public override void UpdateStats(PlayerStatsManager playerStatsManager)
-    //{
-    //    ConfigureStats();
+        criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));
+        criticalPercent += playerStatsManager.GetStatValue(Stat.CriticalPercent);
 
-    //    damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
-    //    attackDelay /= 1 + (playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
-
-    //    criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));
-    //    criticalPercent += playerStatsManager.GetStatValue(Stat.CriticalPercent);
-
-    //    range += playerStatsManager.GetStatValue(Stat.Range) / 10;
-    //}
+        range += playerStatsManager.GetStatValue(Stat.Range) / 10;
+    }
 }
