@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerStatsManager : MonoBehaviour
 {
     [Header(" Data ")]
-    [SerializeField] private CharacterDataSO playerData;
+    [SerializeField]private CharacterDataSO playerData;
 
     [Header(" Settings ")]
     private Dictionary<Stat, float> playerStats = new Dictionary<Stat, float>();
