@@ -54,7 +54,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void StartWave(int waveIndex)
     {
         ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + waves.Length);
-        Debug.Log("Starting Wave " + waveIndex);
         localCounters.Clear();
         foreach (WaveSegment segment in waves[waveIndex].segments)
             localCounters.Add(1);
@@ -120,7 +119,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void DefeatAllEnemies()
     {
         foreach (Enemy enemy in transform.GetComponentsInChildren<Enemy>())
-            enemy.PassAwayAfterWave();
+            enemy.PassAway();
     }
     private Vector2 GetSpawnPosition()
     {

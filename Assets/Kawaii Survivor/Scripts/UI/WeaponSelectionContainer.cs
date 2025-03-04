@@ -15,36 +15,35 @@ public class WeaponSelectionContainer : MonoBehaviour
 
     [Header(" Stats ")]
     [SerializeField] private Transform statContainersParent;
-
-
+    [field: SerializeField] public Button button { get; private set; }
     [Header(" Color ")]
     [SerializeField] private Image[] levelDependentImages;
     [SerializeField] private Image outline;
 
-    public void Configure(Sprite sprite, string name, int level)//WeaponDataSO weaponData
+    public void Configure(Sprite sprite, string name, int level, WeaponDataSO weaponData)
     {
         icon.sprite = sprite;
-        nameText.text = name;
+        nameText.text = name + " (lvl " + (level + 1) + ")";
         //icon.sprite = weaponData.Sprite;
         //nameText.text = weaponData.Name + $" (lvl {level + 1})";
 
         Color imageColor = ColorHolder.GetColor(level);
-        //nameText.color = imageColor;
-
-        //outline.color = ColorHolder.GetOutlineColor(level);
+        nameText.color = imageColor;
+        outline.color = ColorHolder.GetOutlineColor(level);
 
         foreach (Image image in levelDependentImages)
             image.color = imageColor;
 
-        //Dictionary<Stat, float> calculatedStats = WeaponStatsCalculator.GetStats(weaponData, level);
+        Dictionary<Stat, float> calculatedStats = WeaponStatsCalculator.GetStats(weaponData, level);
 
-        //ConfigureStatContainers(calculatedStats);
+        ConfigureStatContainers(calculatedStats);
     }
 
-    //private void ConfigureStatContainers(Dictionary<Stat, float> calculatedStats)
-    //{
-    //    StatContainerManager.GenerateStatContainers(calculatedStats, statContainersParent);
-    //}
+    private void ConfigureStatContainers(Dictionary<Stat, float> calculatedStats)
+    {
+        StatContainerManager.GenerateStatContainers(calculatedStats, statContainersParent);
+
+    }
 
     public void Select()
     {

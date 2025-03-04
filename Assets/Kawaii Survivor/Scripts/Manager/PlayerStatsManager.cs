@@ -22,39 +22,19 @@ public class PlayerStatsManager : MonoBehaviour
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        UpdatePlayerStats();
-    }
+    void Start() =>  UpdatePlayerStats();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void AddPlayerStat(Stat stat, float value)
     {
         if (addends.ContainsKey(stat))
-        {
             addends[stat] += value;
-        }
-        else 
-        {
+        
+        else  
             Debug.LogError($"The key {stat} has not been found, this is not normal !!! Review your code !!!!");
-        }
+       
         UpdatePlayerStats();
-        //if (addends.ContainsKey(stat))
-        //    addends[stat] += value;
-        //else
-        //    Debug.LogError($"The key {stat} has not been found, this is not normal !!! Review your code !!!!");
-
-        //UpdatePlayerStats();
     }
-    public float GetStatValue(Stat stat) 
-    {
-        float value = playerStats[stat] + addends[stat];
-        return value;
-    }
+    public float GetStatValue(Stat stat) => playerStats[stat] + addends[stat]; 
 
     private void UpdatePlayerStats()
     {

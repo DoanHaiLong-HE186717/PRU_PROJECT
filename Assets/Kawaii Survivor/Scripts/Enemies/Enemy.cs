@@ -98,8 +98,8 @@ public abstract class Enemy : MonoBehaviour
 
     public void PassAway()
     {
-        if (hasDied) return;  
-        hasDied = true;
+        //if (hasDied) return;  
+        //hasDied = true;
 
         onPassedAway?.Invoke(transform.position);
         PassAwayAfterWave();
