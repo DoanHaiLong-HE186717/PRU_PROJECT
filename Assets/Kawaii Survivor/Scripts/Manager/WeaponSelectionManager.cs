@@ -7,27 +7,27 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     [Header(" Elements ")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private WeaponSelectionContainer weaponContainerPrefab;
-    //[SerializeField] private PlayerWeapons playerWeapons;
+    [SerializeField] private PlayerWeapons playerWeapons;
 
-    //[Header(" Data ")]
-    //[SerializeField] private WeaponDataSO[] starterWeapons;
-    //private WeaponDataSO selectedWeapon;
-    //private int initialWeaponLevel;
+    [Header(" Data ")]
+    [SerializeField] private WeaponDataSO[] starterWeapons;
+    private WeaponDataSO selectedWeapon;
+    private int initialWeaponLevel;
 
     public void GameStateChangedCallback(GameState gameState)
     {
         switch (gameState)
         {
-            //case GameState.GAME:
+            case GameState.GAME:
 
-            //    if (selectedWeapon == null)
-            //        return;
+                if (selectedWeapon == null)
+                    return;
 
-            //    playerWeapons.TryAddWeapon(selectedWeapon, initialWeaponLevel);
-            //    selectedWeapon = null;
-            //    initialWeaponLevel = 0;
+                playerWeapons.AddWeapon(selectedWeapon, initialWeaponLevel);
+                selectedWeapon = null;
+                initialWeaponLevel = 0;
 
-            //    break;
+                break;
 
             case GameState.WEAPONSELECTION:
                 Configure();
@@ -50,27 +50,27 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     {
         WeaponSelectionContainer containerInstance = Instantiate(weaponContainerPrefab, containersParent);
 
-        //WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];
+        WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];
 
-        //int level = Random.Range(0, 4);
+        int level = Random.Range(0, 4);
+        containerInstance.Configure(weaponData.Sprite, weaponData.Name, level);
 
-        //containerInstance.Configure(weaponData, level);
 
-        //containerInstance.Button.onClick.RemoveAllListeners();
-        //containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData, level));
+
+        containerInstance.Button.onClick.RemoveAllListeners();
+        containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData,level)); 
     }
 
-    //private void WeaponSelectedCallback(WeaponSelectionContainer containerInstance, WeaponDataSO weaponData, int level)
-    //{
-    //    selectedWeapon = weaponData;
-    //    initialWeaponLevel = level;
+    private void WeaponSelectedCallback(WeaponSelectionContainer containerInstance, WeaponDataSO weaponData, int level) { 
+        selectedWeapon = weaponData;
+        initialWeaponLevel = level;
 
-    //    foreach (WeaponSelectionContainer container in containersParent.GetComponentsInChildren<WeaponSelectionContainer>())
-    //    {
-    //        if (container == containerInstance)
-    //            container.Select();
-    //        else
-    //            container.Deselect();
-    //    }
-    //}
+        foreach (WeaponSelectionContainer container in containersParent.GetComponentsInChildren<WeaponSelectionContainer>())
+        {
+            if (container == containerInstance)
+                container.Select();
+            else
+                container.Deselect();
+        }
+    }
 }

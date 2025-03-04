@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007761634381874393}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -68,13 +68,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4f0729282e76e4ca968b5aea10b737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <WeaponData>k__BackingField: {fileID: 11400000, guid: 112b39c47b3585b4baa80f7ed5a9896b, type: 2}
   range: 6
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
-  damage: 10
+  damage: 0
   attackDelay: 0.15
   animator: {fileID: 4243508021288810502}
+  <Level>k__BackingField: 0
   aimLerp: 12
   bulletPrefab: {fileID: -512068311923717094, guid: 2cf4d7d34b48447438e3f8b571e920cf, type: 3}
   shootingPoint: {fileID: 1701404899112723961}

@@ -35,15 +35,7 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
     [Header("Animation")]
     [SerializeField]
     protected float aimLerp;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
     protected Enemy GetClosestEnemy()
     {
         Enemy closestEnemy = null;
@@ -102,4 +94,10 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
     }
 
     public abstract void UpdateStats(PlayerStatsManager playerStatsManager);
+
+    public void UpgradeTo(int targetLevel) 
+    {
+        Level = targetLevel;
+        ConfigureStats();
+    }
 }
