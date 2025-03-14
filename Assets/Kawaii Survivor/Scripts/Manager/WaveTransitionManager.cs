@@ -11,10 +11,40 @@ using Random = UnityEngine.Random;
 using Unity.VisualScripting;
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveTransitionManager instance;
+
+    [Header(" Player ")]
+    [SerializeField] private PlayerObjects playerObjects;
+
+
     [Header(" Elements ")]
     [SerializeField] private PlayerStatsManager playerStatsManager;
     [SerializeField] private UpgradeContainer[] upgradeContainers;
+    [SerializeField] private GameObject upgradeContainersParent;
 
+
+
+    [Header(" Chest Related Stuff ")]
+    [SerializeField] private ChestObjectContainer chestContainerPrefab;
+    [SerializeField] private Transform chestContainerParent;
+
+
+    [Header(" Settings ")]
+    private int chestsCollected;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
+        Chest.onCollected += ChestCollectedCallback;
+    }
+    private void OnDestroy()
+    {
+        Chest.onCollected -= ChestCollectedCallback;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,15 +61,55 @@ public void GameStateChangedCallback(GameState gameState)
         switch (gameState) 
         {
             case GameState.WAVETRANSITION:
-                ConfigureUpgradeContainer();
+                TryOpenChest();
                 break;
 
         }
     }
 
+    private void TryOpenChest()
+    {
+        chestContainerParent.Clear();
+
+        if (chestsCollected > 0)
+            ShowObject();
+        else
+            ConfigureUpgradeContainer();
+    }
+
+    private void ShowObject()
+    {
+        chestsCollected--;
+
+        upgradeContainersParent.SetActive(false);
+
+        ObjectDataSO[] objectDatas = ResourcesManager.Objects;
+
+        ObjectDataSO randomObjectData = objectDatas[Random.Range(0, objectDatas.Length)];
+
+        ChestObjectContainer containerInstance = Instantiate(chestContainerPrefab, chestContainerParent);
+        containerInstance.Configure(randomObjectData);
+
+        containerInstance.TakeButton.onClick.AddListener(() => TakeButtonCallback(randomObjectData));
+        containerInstance.RecycleButton.onClick.AddListener(() => RecyleButtonCallback(randomObjectData));
+    }
+    private void TakeButtonCallback(ObjectDataSO objectToTake)
+    {
+        playerObjects.AddObject(objectToTake);
+        TryOpenChest();
+    }
+    private void RecyleButtonCallback(ObjectDataSO objectToRecycle)
+    {
+        CurrencyManager.instance.AddCurrency(objectToRecycle.RecyclePrice);
+        TryOpenChest();
+    }
+
+
     [Button]
     private void ConfigureUpgradeContainer()
     {
+        upgradeContainersParent.SetActive(true);
+
         for (int i = 0; i < upgradeContainers.Length; i++)
         {
             int randomIndex = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
@@ -146,5 +216,15 @@ public void GameStateChangedCallback(GameState gameState)
         }
 
         return () => playerStatsManager.AddPlayerStat(stat, value);
+    }
+
+    private void ChestCollectedCallback()
+    {
+        chestsCollected++;
+        Debug.Log($"We now have {chestsCollected} chests");
+    }
+    public bool HasCollectedChest()
+    {
+        return chestsCollected > 0;
     }
 }

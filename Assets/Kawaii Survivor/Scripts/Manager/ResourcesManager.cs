@@ -29,19 +29,19 @@ public static class ResourcesManager
 
 
 
-    //private static ObjectDataSO[] objectDatas;
-    //public static ObjectDataSO[] Objects
-    //{
-    //    get
-    //    {
-    //        if (objectDatas == null)
-    //            objectDatas = Resources.LoadAll<ObjectDataSO>(objectDatasPath);
+    private static ObjectDataSO[] objectDatas;
+    public static ObjectDataSO[] Objects
+    {
+        get
+        {
+            if (objectDatas == null)
+                objectDatas = Resources.LoadAll<ObjectDataSO>(objectDatasPath);
 
-    //        return objectDatas;
-    //    }
+            return objectDatas;
+        }
 
-    //    private set { }
-    //}
+        private set { }
+    }
 
     //public static ObjectDataSO GetRandomObject()
     //{
