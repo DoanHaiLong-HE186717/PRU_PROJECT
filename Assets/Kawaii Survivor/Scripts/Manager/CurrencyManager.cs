@@ -1,10 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Tabsil.Sijil;
+
 
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager instance;
 
     [field: SerializeField] public int Currency { get; private set; }
+
+    [Header(" Actions ")]
+    public static Action onUpdated;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,10 +38,14 @@ public class CurrencyManager : MonoBehaviour
         
     }
 
+    [NaughtyAttributes.Button]
+    private void Add500Currency() => AddCurrency(500);
     public void AddCurrency(int amount)
     {
         Currency += amount;
         UpdateTexts();
+
+        onUpdated?.Invoke();
         //UpdateVisuals();
     }
     private void UpdateTexts()
@@ -47,4 +60,6 @@ public class CurrencyManager : MonoBehaviour
         //foreach (PremiumCurrencyText text in premiumCurrencyTexts)
         //    text.UpdateText(PremiumCurrency.ToString());
     }
+    public void UseCurrency(int price) => AddCurrency(-price);
+    public bool HasEnoughCurrency(int price) => Currency >= price;
 }

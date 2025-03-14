@@ -23,7 +23,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
                 if (selectedWeapon == null)
                     return;
 
-                playerWeapons.AddWeapon(selectedWeapon, initialWeaponLevel);
+                playerWeapons.TryAddWeapon(selectedWeapon, initialWeaponLevel);
                 selectedWeapon = null;
                 initialWeaponLevel = 0;
 
@@ -52,7 +52,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];
 
-        int level = Random.Range(0, 4);
+        int level = Random.Range(0, 1);
         containerInstance.Configure(weaponData, level);
 
 

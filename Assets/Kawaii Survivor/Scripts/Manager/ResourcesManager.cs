@@ -6,7 +6,7 @@ public static class ResourcesManager
 {
     const string statIconsDataPath = "Data/Stat Icons";
     const string objectDatasPath = "Data/Objects/";
-    const string weaponDatasPath = "Data/Weapons/";
+    const string weaponDatasPath = "Data/Weapon/";
     const string characterDatasPath = "Data/Characters/";
 
     private static StatIcon[] statIcons;
@@ -43,30 +43,30 @@ public static class ResourcesManager
         private set { }
     }
 
-    //public static ObjectDataSO GetRandomObject()
-    //{
-    //    return Objects[Random.Range(0, Objects.Length)];
-    //}
+    public static ObjectDataSO GetRandomObject()
+    {
+        return Objects[Random.Range(0, Objects.Length)];
+    }
 
 
-    //private static WeaponDataSO[] weaponDatas;
-    //public static WeaponDataSO[] Weapons
-    //{
-    //    get
-    //    {
-    //        if (weaponDatas == null)
-    //            weaponDatas = Resources.LoadAll<WeaponDataSO>(weaponDatasPath);
+    private static WeaponDataSO[] weaponDatas;
+    public static WeaponDataSO[] Weapons
+    {
+        get
+        {
+            if (weaponDatas == null)
+                weaponDatas = Resources.LoadAll<WeaponDataSO>(weaponDatasPath);
 
-    //        return weaponDatas;
-    //    }
+            return weaponDatas;
+        }
 
-    //    private set { }
-    //}
+        private set { }
+    }
 
-    //public static WeaponDataSO GetRandomWeapon()
-    //{
-    //    return Weapons[Random.Range(0, Weapons.Length)];
-    //}
+    public static WeaponDataSO GetRandomWeapon()
+    {
+        return Weapons[Random.Range(0, Weapons.Length)];
+    }
 
 
     //private static CharacterDataSO[] characterDatas;
