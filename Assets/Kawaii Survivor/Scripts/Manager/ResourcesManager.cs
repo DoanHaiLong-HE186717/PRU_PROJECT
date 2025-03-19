@@ -45,6 +45,10 @@ public static class ResourcesManager
 
     public static ObjectDataSO GetRandomObject()
     {
+        if (Objects == null) 
+        {
+            Debug.Log("this part is null");
+        }
         return Objects[Random.Range(0, Objects.Length)];
     }
 

@@ -47,8 +47,13 @@ public class ShopItemContainer : MonoBehaviour
         if (WeaponData != null)
             itemPrice = WeaponStatsCalculator.GetPurchasePrice(WeaponData, weaponLevel);
         else
+        { 
+            if (ObjectData == null) 
+        {
+                Debug.Log("null");
+        }
             itemPrice = ObjectData.Price;
-
+        }
         purchaseButton.interactable = CurrencyManager.instance.HasEnoughCurrency(itemPrice);
     }
 

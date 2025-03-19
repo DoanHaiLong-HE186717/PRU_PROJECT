@@ -93,7 +93,10 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         {
             ShopItemContainer objectContainerInstance = Instantiate(shopItemContainerPrefab, containersParent);
             ObjectDataSO randomObject = ResourcesManager.GetRandomObject();
-
+            if (randomObject == null) 
+            {
+                Debug.Log("randomObject is null");
+            }
             objectContainerInstance.Configure(randomObject);
         }
     }

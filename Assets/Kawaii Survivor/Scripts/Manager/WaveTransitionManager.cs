@@ -90,13 +90,20 @@ public void GameStateChangedCallback(GameState gameState)
 
         ChestObjectContainer containerInstance = Instantiate(chestContainerPrefab, chestContainerParent);
         containerInstance.Configure(randomObjectData);
-
+        if (randomObjectData == null) 
+        {
+            Debug.Log("randomObjectData is null");
+        }
         containerInstance.TakeButton.onClick.AddListener(() => TakeButtonCallback(randomObjectData));
         containerInstance.RecycleButton.onClick.AddListener(() => RecyleButtonCallback(randomObjectData));
     }
     private void TakeButtonCallback(ObjectDataSO objectToTake)
     {
         playerObjects.AddObject(objectToTake);
+        if(objectToTake == null) 
+        {
+            Debug.Log("objetToTake is Null");
+        }
         TryOpenChest();
     }
     private void RecyleButtonCallback(ObjectDataSO objectToRecycle)
