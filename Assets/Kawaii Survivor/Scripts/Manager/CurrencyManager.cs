@@ -26,7 +26,6 @@ public class CurrencyManager : MonoBehaviour
         //Candy.onCollected += CandyCollectedCallback;
         //Cash.onCollected += CashCollectedCallback;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         UpdateTexts();
