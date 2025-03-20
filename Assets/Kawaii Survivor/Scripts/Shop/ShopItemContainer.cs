@@ -42,18 +42,16 @@ public class ShopItemContainer : MonoBehaviour
 
     private void CurrencyUpdatedCallback()
     {
-        int itemPrice;
+        // Skip the callback if this container has been cleared/sold
+        if (WeaponData == null && ObjectData == null)
+            return;
 
+        int itemPrice;
         if (WeaponData != null)
             itemPrice = WeaponStatsCalculator.GetPurchasePrice(WeaponData, weaponLevel);
         else
-        { 
-            if (ObjectData == null) 
-        {
-                Debug.Log("null");
-        }
             itemPrice = ObjectData.Price;
-        }
+
         purchaseButton.interactable = CurrencyManager.instance.HasEnoughCurrency(itemPrice);
     }
 
