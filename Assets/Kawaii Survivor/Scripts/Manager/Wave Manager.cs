@@ -1,7 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
+using System.Collections;
 
 
 [RequireComponent(typeof(WaveManagerUI))]
@@ -10,7 +10,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [Header(" Elements ")]
     [SerializeField] private Player player;
     private WaveManagerUI ui;
-
+    [SerializeField] private EnvironmentEffectsManager environmentManager;
 
     [Header(" Settings ")]
     [SerializeField] private float waveDuration;
@@ -18,6 +18,15 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private bool isTimerOn;
     private int currentWaveIndex;
 
+    [Header(" Environment Effects ")]
+    [SerializeField] private bool enableDayNightCycle = true;
+    [SerializeField] private bool enableRandomRain = true;
+    [SerializeField] private float rainChancePerWave = 0.3f; // 30% chance per wave
+    [SerializeField] private float minRainDuration = 10f;
+    [SerializeField] private float maxRainDuration = 30f;
+    private bool isNightTime = false;
+    private bool wasRainTriggered = false;
+    private Coroutine rainCoroutine;
 
     [Header(" Waves ")]
     [SerializeField] private Wave[] waves;
@@ -27,10 +36,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         ui = GetComponent<WaveManagerUI>();
     }
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
+        if (environmentManager == null)
+            environmentManager = FindObjectOfType<EnvironmentEffectsManager>();
     }
 
     // Update is called once per frame
@@ -41,14 +52,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (timer < waveDuration)
         {
             ManageCurrentWave();
+            ManageEnvironmentEffects();
 
             string timerString = ((int)(waveDuration - timer)).ToString();
             ui.UpdateTimerText(timerString);
         }
         else StartWaveTransition();
-
-
-
     }
 
     private void StartWave(int waveIndex)
@@ -60,6 +69,75 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         timer = 0;
         isTimerOn = true;
+        isNightTime = false;
+        wasRainTriggered = false;
+        
+        // Reset to day time at start of wave
+        if (environmentManager != null && enableDayNightCycle)
+        {
+            environmentManager.SetNightTime(false);
+        }
+        
+        // Consider random rain for this wave
+        TryStartRandomRain();
+    }
+    
+    private void ManageEnvironmentEffects()
+    {
+        // Handle day/night cycle
+        if (enableDayNightCycle && environmentManager != null)
+        {
+            // Switch to night time when timer reaches half of wave duration
+            if (timer >= waveDuration / 2 && !isNightTime)
+            {
+                isNightTime = true;
+                environmentManager.SetNightTime(true);
+            }
+        }
+        
+        // Handle random rain if it hasn't been triggered yet this wave
+        if (enableRandomRain && !wasRainTriggered && Random.value < rainChancePerWave / waveDuration * Time.deltaTime)
+        {
+            TriggerRainEffect();
+        }
+    }
+    
+    private void TryStartRandomRain()
+    {
+        if (enableRandomRain && Random.value < rainChancePerWave)
+        {
+            // Trigger rain after a random delay
+            float randomDelay = Random.Range(5f, waveDuration / 2);
+            rainCoroutine = StartCoroutine(TriggerRainAfterDelay(randomDelay));
+        }
+    }
+    
+    private System.Collections.IEnumerator TriggerRainAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        TriggerRainEffect();
+    }
+    
+    private void TriggerRainEffect()
+    {
+        if (environmentManager != null && !wasRainTriggered)
+        {
+            wasRainTriggered = true;
+            float rainDuration = Random.Range(minRainDuration, maxRainDuration);
+            
+            environmentManager.SetRainEffect(true);
+            
+            // Schedule rain stop
+            rainCoroutine = StartCoroutine(StopRainAfterDelay(rainDuration));
+        }
+    }
+    
+    private System.Collections.IEnumerator StopRainAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        if (environmentManager != null)
+            environmentManager.SetRainEffect(false);
     }
 
     private void ManageCurrentWave()
@@ -95,6 +173,20 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         isTimerOn = false;
 
         DefeatAllEnemies();
+        
+        // Stop any ongoing rain
+        if (rainCoroutine != null)
+        {
+            StopCoroutine(rainCoroutine);
+            rainCoroutine = null;
+        }
+        
+        if (environmentManager != null)
+        {
+            environmentManager.SetRainEffect(false);
+            // Reset to day for transition
+            environmentManager.SetNightTime(false);
+        }
 
         currentWaveIndex++;
 
@@ -107,20 +199,20 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         else 
         {
             GameManager.instance.WaveCompletedCallback();
-           
         }
-
-
     }
+    
     private void StartNextWave()
     {
         StartWave(currentWaveIndex);
     }
+    
     private void DefeatAllEnemies()
     {
         foreach (Enemy enemy in transform.GetComponentsInChildren<Enemy>())
             enemy.PassAway();
     }
+    
     private Vector2 GetSpawnPosition()
     {
         Vector2 direction = Random.onUnitSphere;
@@ -144,6 +236,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             case GameState.GAMEOVER:
                 isTimerOn = false;
                 DefeatAllEnemies();
+                
+                // Reset environment effects
+                if (environmentManager != null)
+                {
+                    environmentManager.SetRainEffect(false);
+                    environmentManager.SetNightTime(false);
+                }
                 break;
         }
     }

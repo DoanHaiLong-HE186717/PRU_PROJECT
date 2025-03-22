@@ -5082,6 +5082,7 @@ MonoBehaviour:
   renderer: {fileID: 3994317999042968439}
   spawnIndicator: {fileID: 2387014563062880828}
   collider: {fileID: 5487750122441940488}
+  hideSpawnIndicatorAtNight: 1
   passAwayParticles: {fileID: 3635148671078786238}
   playerDetectionRadius: 0.5
   gizmos: 1

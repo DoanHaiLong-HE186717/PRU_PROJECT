@@ -20,6 +20,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected SpriteRenderer spawnIndicator;
     [SerializeField] protected Collider2D collider;
     protected bool hasSpawned;
+    [SerializeField] protected bool hideSpawnIndicatorAtNight = true;
 
     [Header(" Effects ")]
     [SerializeField] protected ParticleSystem passAwayParticles;
@@ -49,7 +50,16 @@ public abstract class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // Subscribe to day/night changes
+        EnvironmentEffectsManager.onDayNightChanged += OnDayNightChanged;
+        
         StartSpawnSequence();
+    }
+    
+    protected virtual void OnDestroy()
+    {
+        // Unsubscribe to prevent memory leaks
+        EnvironmentEffectsManager.onDayNightChanged -= OnDayNightChanged;
     }
 
     // Update is called once per frame
@@ -61,6 +71,15 @@ public abstract class Enemy : MonoBehaviour
     private void StartSpawnSequence()
     {
         SetRenderersVisibility(false);
+
+        // Check if it's night time and should hide indicator
+        if (hideSpawnIndicatorAtNight && 
+            EnvironmentEffectsManager.instance != null && 
+            EnvironmentEffectsManager.instance.IsNightTime())
+        {
+            SpawnSequenceCompleted();
+            return;
+        }
 
         // Scale up & down the spawn indicator
         Vector3 targetScale = spawnIndicator.transform.localScale * 1.2f;
@@ -83,6 +102,23 @@ public abstract class Enemy : MonoBehaviour
     {
         renderer.enabled = visibility;
         spawnIndicator.enabled = !visibility;
+        
+        // If night time and should hide indicator, force it to be invisible
+        if (hideSpawnIndicatorAtNight && 
+            EnvironmentEffectsManager.instance != null && 
+            EnvironmentEffectsManager.instance.IsNightTime())
+        {
+            spawnIndicator.enabled = false;
+        }
+    }
+    
+    private void OnDayNightChanged(bool isNight)
+    {
+        // If spawn indicator is active during a transition to night, hide it
+        if (isNight && hideSpawnIndicatorAtNight && !hasSpawned)
+        {
+            spawnIndicator.enabled = false;
+        }
     }
 
     public void TakeDamage(int damage , bool isCriticalHit)
