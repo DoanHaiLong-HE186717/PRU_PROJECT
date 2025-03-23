@@ -4828,7 +4828,7 @@ MonoBehaviour:
   cashPrefab: {fileID: 2079920538132365315, guid: 3ddb1f64200e1e34996d33b3ffd327f7, type: 3}
   chestPrefab: {fileID: 2038560177568693946, guid: 459b4434d0f87ad44aad293c80000d51, type: 3}
   cashDropChance: 10
-  chestDropChance: 44
+  chestDropChance: 5
 --- !u!1 &678967153
 GameObject:
   m_ObjectHideFlags: 0

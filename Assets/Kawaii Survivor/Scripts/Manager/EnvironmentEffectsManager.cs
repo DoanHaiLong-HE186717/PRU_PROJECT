@@ -75,7 +75,6 @@ public class EnvironmentEffectsManager : MonoBehaviour
                 rainSpeedChangeRoutine = null;
             }
             
-            // Reset player speed to normal
             PlayerController[] players = FindObjectsOfType<PlayerController>();
             foreach (var player in players)
             {
@@ -86,6 +85,7 @@ public class EnvironmentEffectsManager : MonoBehaviour
         onRainStatusChanged?.Invoke(isActive);
     }
 
+    //Change background colorcolor
     private IEnumerator TransitionBackgroundColor(Color targetColor)
     {
         Color startColor = mainCamera.backgroundColor;
@@ -101,6 +101,7 @@ public class EnvironmentEffectsManager : MonoBehaviour
         mainCamera.backgroundColor = targetColor;
     }
 
+    //Speed player if condition = rain
     private IEnumerator RandomizePlayerSpeed()
     {
         PlayerController[] players = FindObjectsOfType<PlayerController>();
