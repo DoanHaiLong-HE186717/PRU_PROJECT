@@ -129,17 +129,7 @@ public abstract class Enemy : MonoBehaviour
         onDamageTaken?.Invoke(damage, transform.position, isCriticalHit);
 
         if (health <= 0)
-            PassAway();
-    }
-
-    public void PassAway()
-    {
-        //if (hasDied) return;  
-        //hasDied = true;
-
-        onPassedAway?.Invoke(transform.position);
-        PassAwayAfterWave();
-
+            PassAwayAfterWave();
     }
 
     public void PassAwayAfterWave()
