@@ -210,7 +210,33 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void DefeatAllEnemies()
     {
         foreach (Enemy enemy in transform.GetComponentsInChildren<Enemy>())
-            enemy.PassAway();
+            enemy.PassAwayAfterWave();
+            
+        ClearArea();
+    }
+    
+    private void ClearArea()
+    {
+        // Find and deactivate all uncollected items
+        Cash[] cashItems = FindObjectsOfType<Cash>();
+        foreach (Cash cash in cashItems)
+        {
+            cash.gameObject.SetActive(false);
+        }
+        
+        // Find and deactivate candy items
+        Candy[] candyItems = FindObjectsOfType<Candy>();
+        foreach (Candy candy in candyItems)
+        {
+            candy.gameObject.SetActive(false);
+        }
+        
+        // Find and deactivate chest items
+        Chest[] chestItems = FindObjectsOfType<Chest>();
+        foreach (Chest chest in chestItems)
+        {
+            chest.gameObject.SetActive(false);
+        }
     }
     
     private Vector2 GetSpawnPosition()

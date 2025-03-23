@@ -10,6 +10,9 @@ public class CurrencyManager : MonoBehaviour
     public static CurrencyManager instance;
 
     [field: SerializeField] public int Currency { get; private set; }
+    
+    [Header(" Settings ")]
+    [SerializeField] private int cashValue = 10;
 
     [Header(" Actions ")]
     public static Action onUpdated;
@@ -24,8 +27,14 @@ public class CurrencyManager : MonoBehaviour
         //AddPremiumCurrency(PlayerPrefs.GetInt(premiumCurrencyKey, 100), false);
 
         //Candy.onCollected += CandyCollectedCallback;
-        //Cash.onCollected += CashCollectedCallback;
+        Cash.onCollected += CashCollectedCallback;
     }
+    
+    private void OnDestroy()
+    {
+        Cash.onCollected -= CashCollectedCallback;
+    }
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,6 +45,11 @@ public class CurrencyManager : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    private void CashCollectedCallback(Cash cash)
+    {
+        AddCurrency(cashValue);
     }
 
     [NaughtyAttributes.Button]
@@ -54,11 +68,6 @@ public class CurrencyManager : MonoBehaviour
 
         foreach (CurrencyText text in currencyTexts)
             text.UpdateText(Currency.ToString());
-
-        //PremiumCurrencyText[] premiumCurrencyTexts = FindObjectsByType<PremiumCurrencyText>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
-        //foreach (PremiumCurrencyText text in premiumCurrencyTexts)
-        //    text.UpdateText(PremiumCurrency.ToString());
     }
     public void UseCurrency(int price) => AddCurrency(-price);
     public bool HasEnoughCurrency(int price) => Currency >= price;

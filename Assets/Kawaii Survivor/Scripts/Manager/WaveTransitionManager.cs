@@ -62,9 +62,18 @@ public void GameStateChangedCallback(GameState gameState)
         switch (gameState) 
         {
             case GameState.WAVETRANSITION:
-                TryOpenChest();
+                // Check if this is a level-up or chest collection
+                if (Player.instance.HasLeveledUp())
+                {
+                    // Show level-up screen
+                    ConfigureUpgradeContainer();
+                }
+                else
+                {
+                    // Handle chest only if we've collected one
+                    TryOpenChest();
+                }
                 break;
-
         }
     }
 
@@ -75,7 +84,8 @@ public void GameStateChangedCallback(GameState gameState)
         if (chestsCollected > 0)
             ShowObject();
         else
-            ConfigureUpgradeContainer();
+            // If no chests and somehow we got here, go to shop
+            GameManager.instance.SetGameState(GameState.SHOP);
     }
 
     private void ShowObject()
