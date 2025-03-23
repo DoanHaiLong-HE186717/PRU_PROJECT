@@ -210,7 +210,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void DefeatAllEnemies()
     {
         foreach (Enemy enemy in transform.GetComponentsInChildren<Enemy>())
-            enemy.PassAway();
+            enemy.PassAwayAfterWave();
     }
     
     private Vector2 GetSpawnPosition()
