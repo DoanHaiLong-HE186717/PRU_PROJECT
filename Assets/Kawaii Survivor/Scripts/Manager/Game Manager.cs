@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(GameState gameState)
     {
+        // Log the game state change
+        Debug.Log($"Changing game state to: {gameState}");
+        
         IEnumerable<IGameStateListener> gameStateListeners =
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<IGameStateListener>();
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public void WaveCompletedCallback()
     {
+        // Reset game state to ensure clean transition
         if (Player.instance.HasLeveledUp())
         {
             SetGameState(GameState.WAVETRANSITION);
